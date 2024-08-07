@@ -24,15 +24,18 @@ void Player::Update() {
 		move.x += kCharacterSpeed;
 	}
 	//押した方向で移動ベクトルを変更(上下)
-	if (input_->PushKey(DIK_UP)) {
+	if (input_->PushKey(DIK_DOWN)) {
 		move.y -= kCharacterSpeed;
-	} else if (input_->PushKey(DIK_DOWN)) {
+	} else if (input_->PushKey(DIK_UP)) {
 		move.y += kCharacterSpeed;
 	}
 	//座標移動
 	worldTransform_.translation_ += move;
 
-	
+	Matrix4x4 affine = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+	worldTransform_.matWorld_ = affine;
+	//定数バッファに転送する
+	worldTransform_.TransferMatrix();
 }
 
 void Player::Draw(ViewProjection&viewProjection) {
