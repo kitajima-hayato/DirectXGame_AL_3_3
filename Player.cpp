@@ -29,7 +29,7 @@ void Player::Update() {
 	} else if (input_->PushKey(DIK_UP)) {
 		move.y += kCharacterSpeed;
 	}
-
+	Rotate();
 	// 移動限界座標
 	const float kMoveLimitX = 30.0f;
 	const float kMoveLimitY = 19.0f;
@@ -54,7 +54,20 @@ void Player::Update() {
 	worldTransform_.TransferMatrix();
 }
 
+void Player::Rotate() { 
+	//回転の速さ[ラジアン/flame]
+	const float kRotSpeed = 0.02f;
+	//押した方向で移動ベクトルを変更
+	if (input_->PushKey(DIK_A)) {
+		worldTransform_.rotation_.y -= kRotSpeed;
+	} else if (input_->PushKey(DIK_D)) {
+		worldTransform_.rotation_.y += kRotSpeed;
+	}
+}
+
 void Player::Draw(ViewProjection& viewProjection) {
 	// 3Dモデルの描画
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }
+
+

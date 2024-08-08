@@ -10,6 +10,10 @@ public:
 	void Initialize(Model*model,uint32_t textureHandle);
 	void Update();
 	void Draw(ViewProjection&viewProjection);
+	
+	//旋回
+	void Rotate();
+
 
 private:
 	//ワールド変換データ
