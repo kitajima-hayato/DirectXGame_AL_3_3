@@ -108,3 +108,5 @@ float Length(const Vector3& v);
 Vector3 Subtract(const Vector3& v1, const Vector3& v2);
 //
 Vector3 Multiply(float scalar, const Vector3& v);
+//ベクトル変換
+Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
