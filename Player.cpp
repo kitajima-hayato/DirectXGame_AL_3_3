@@ -29,6 +29,7 @@ void Player::Update() {
 	} else if (input_->PushKey(DIK_UP)) {
 		move.y += kCharacterSpeed;
 	}
+	//プレイヤーの旋回処理
 	Rotate();
 	// 移動限界座標
 	const float kMoveLimitX = 30.0f;
@@ -44,6 +45,14 @@ void Player::Update() {
 	worldTransform_.translation_ += move;
 	Matrix4x4 affine = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 	worldTransform_.matWorld_ = affine;
+
+	//キャラクター攻撃処理
+	Attack();
+	//弾更新
+	if (bullet_) {
+	
+	bullet_->Update();
+	}
 
 	// キャラクターの座標を画面表示する処理
 	ImGui::Begin("Player");
@@ -65,9 +74,23 @@ void Player::Rotate() {
 	}
 }
 
+void Player::Attack() {
+	if (input_->PushKey(DIK_SPACE)) {
+		//弾を生成し、初期化
+		PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->Initialize(model_, worldTransform_.translation_);
+		//弾を登録する
+		bullet_ = newBullet;
+	}
+}
+
 void Player::Draw(ViewProjection& viewProjection) {
 	// 3Dモデルの描画
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	//弾の描画
+	if (bullet_) {
+		bullet_->Draw(viewProjection);
+	}
 }
 
 
