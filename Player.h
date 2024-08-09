@@ -4,9 +4,11 @@
 #include <imgui.h>
 #include <Input.h>
 #include <MakeMatrix.h>
+#include <list>
 #include "PlayerBullet.h"
 class Player {
 public:
+	~Player();
 	void Initialize(Model*model,uint32_t textureHandle);
 	void Update();
 	void Draw(ViewProjection&viewProjection);
@@ -27,5 +29,5 @@ private:
 	Input* input_ = nullptr;
 
 	//弾
-	PlayerBullet* bullet_ = nullptr;
+	std::list<PlayerBullet*> bullets_;
 };

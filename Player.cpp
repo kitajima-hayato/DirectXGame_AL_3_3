@@ -1,6 +1,12 @@
 #include "Player.h"
 #include <cassert>
 
+Player::~Player() { 
+	for (PlayerBullet* bullet : bullets_) {
+		delete bullet;
+	}
+}
+
 void Player::Initialize(Model* model, uint32_t textureHandle) {
 	// NULLポインタチェック
 	assert(model);
@@ -49,9 +55,8 @@ void Player::Update() {
 	//キャラクター攻撃処理
 	Attack();
 	//弾更新
-	if (bullet_) {
-	
-	bullet_->Update();
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Update();
 	}
 
 	// キャラクターの座標を画面表示する処理
@@ -76,11 +81,12 @@ void Player::Rotate() {
 
 void Player::Attack() {
 	if (input_->PushKey(DIK_SPACE)) {
+		
 		//弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, worldTransform_.translation_);
 		//弾を登録する
-		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
 	}
 }
 
@@ -88,8 +94,8 @@ void Player::Draw(ViewProjection& viewProjection) {
 	// 3Dモデルの描画
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 	//弾の描画
-	if (bullet_) {
-		bullet_->Draw(viewProjection);
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection);
 	}
 }
 
