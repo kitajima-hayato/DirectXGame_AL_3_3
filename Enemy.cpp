@@ -9,14 +9,23 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 	worldTransform_.Initialize();
 	//引数で受け取った初期座標をセット
 	worldTransform_.translation_ = position;
+
+
+
 }
 
 void Enemy::Update() {
-	//移動速度
-	const float kSpeed_ = 0.1f;
-	Vector3 velocity = {0, 0, kSpeed_};
-	worldTransform_.translation_ -= velocity;
-
+	// 移動速度
+	
+	
+	switch (phase_) {
+	case Phase::Approach:	//接近フェーズ
+		Access();
+		break;
+	case Phase::Leave:		//離脱フェーズ
+		Withdrawal();
+		break;
+	}
 	// 行列更新
 	worldTransform_.UpadateMatrix();
 }
@@ -24,4 +33,17 @@ void Enemy::Update() {
 void Enemy::Draw(const ViewProjection& viewProjection) { 
 	//モデルの描画
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+}
+
+void Enemy::Access() {
+	// 移動(ベクトルを加算)
+	worldTransform_.translation_ += velocity;
+	// 既定の位置に達したら離脱フェーズへ
+	if (worldTransform_.translation_.z > 0.0f) {
+		phase_ = Phase::Leave;
+	}
+}
+
+void Enemy::Withdrawal() {// 移動(ベクトルを加算)
+	worldTransform_.translation_.y -= velocity.z;
 }
