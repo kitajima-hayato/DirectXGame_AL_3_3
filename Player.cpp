@@ -103,6 +103,14 @@ void Player::Attack() {
 	}
 }
 
+Vector3 Player::GetWorldPosition() { 
+	//ワールド座標を入れる変数
+	Vector3 worldPos;
+	//ワールド行列の平湖移動成分を取得（ワールド座標）
+	worldPos = worldTransform_.translation_;
+	return worldPos;
+}
+
 void Player::Draw(ViewProjection& viewProjection) {
 	// 3Dモデルの描画
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);

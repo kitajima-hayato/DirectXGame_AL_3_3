@@ -8,6 +8,9 @@
 #include <imgui.h>
 #include <list>
 #include "EnemyBullet.h"
+//自機クラスの前方宣言
+class Player;
+
 // 行動フェーズ
 enum class Phase {
 	Approach, // 接近する
@@ -20,6 +23,7 @@ public:
 	void Initialize(Model* model, const Vector3& position);
 	void Update();
 	void Draw(const ViewProjection& viewProjection);
+	void SetPlayer(Player* player) { player_ = player; }
 
 	//エネミーの接近フェーズの初期化関数
 	void AccessInit();
@@ -32,6 +36,9 @@ public:
 	//弾の自爆機能ポインタ的に
 	void Suicude();
 	
+	//ワールド座標を取得
+	Vector3 GetWorldPosition();
+
 	//発射間隔
 	static const int kFireInterval = 60;
 
@@ -52,4 +59,7 @@ private:
 
 	//発射タイマー
 	int32_t countDown = 0;
+
+	//自キャラ
+	Player* player_ = nullptr;
 };

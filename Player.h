@@ -18,6 +18,10 @@ public:
 	//弾の発射
 	void Attack();
 
+	//ワールド座標を取得
+	Vector3 GetWorldPosition();
+
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
