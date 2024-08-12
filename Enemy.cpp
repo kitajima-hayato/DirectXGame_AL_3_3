@@ -1,5 +1,5 @@
 #include "Enemy.h"
-
+#include "Player.h"
 Enemy::~Enemy() {
 	for (EnemyBullet* bullet : bullets_) {
 		delete bullet;
@@ -18,7 +18,7 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 
 	// 操作入力
 	input_ = Input::GetInstance();
-	//接近フェーズの初期化
+	// 接近フェーズの初期化
 	AccessInit();
 }
 
@@ -32,7 +32,7 @@ void Enemy::Update() {
 			bullet->Update();
 		}
 		Suicude();
-		
+
 		break;
 	case Phase::Leave: // 離脱フェーズ
 		Withdrawal();
@@ -40,7 +40,7 @@ void Enemy::Update() {
 			bullet->Update();
 		}
 		Suicude();
-		
+
 		break;
 	}
 	// 行列更新
@@ -57,21 +57,21 @@ void Enemy::Draw(const ViewProjection& viewProjection) {
 }
 
 void Enemy::AccessInit() {
-	//発射タイマーの初期化
+	// 発射タイマーの初期化
 	countDown = kFireInterval;
 }
 
 void Enemy::Access() {
-	//発射タイマーカウントダウン
+	// 発射タイマーカウントダウン
 	--countDown;
-	//指定時間に達したら
+	// 指定時間に達したら
 	if (countDown == 0) {
-		//弾を発射
+		// 弾を発射
 		Fire();
-		//発射タイマーを初期化
+		// 発射タイマーを初期化
 		countDown = kFireInterval;
 	}
-	
+
 	// 既定の位置に達したら離脱フェーズへ
 	if (worldTransform_.translation_.z > 0.0f) {
 		phase_ = Phase::Leave;
@@ -85,15 +85,25 @@ void Enemy::Withdrawal() { // 移動(ベクトルを加算)
 }
 
 void Enemy::Fire() {
-	//弾の速度
+	assert(player_);
+	// 弾の速度
 	const float kBulletSpeed = 1.0f;
-	Vector3 velocityBullet(0, 0, kBulletSpeed);
-	//速度ベクトルをエネミー自身の向きに合わせて回転させる
-		 velocityBullet = TransformNormal(velocityBullet, worldTransform_.matWorld_);	
+	Vector3 playerPosition = player_->GetWorldPosition();
+	Vector3 enemyPosition = GetWorldPosition();
+	Vector3 distance = enemyPosition - playerPosition;
+	distance = Normalize(distance);
+	Vector3 velocityNormalize = {
+	    distance.x * kBulletSpeed,
+	    distance.y * kBulletSpeed,
+	    distance.z * kBulletSpeed,
+	}; 
+	Vector3 velocityBullet = velocityNormalize;
+	// 速度ベクトルをエネミー自身の向きに合わせて回転させる
+	velocityBullet = TransformNormal(velocityBullet, worldTransform_.matWorld_);
 
 	// 弾を生成し初期化
 	EnemyBullet* newBullet = new EnemyBullet();
-	newBullet->Initialize(model_, worldTransform_.translation_,velocityBullet);
+	newBullet->Initialize(model_, worldTransform_.translation_, velocityBullet);
 	// 弾を登録する
 	bullets_.push_back(newBullet);
 }
@@ -107,4 +117,11 @@ void Enemy::Suicude() {
 		}
 		return false;
 	});
+}
+
+Vector3 Enemy::GetWorldPosition() {
+	// ワールド座標を入れる変数
+	Vector3 worldPos;
+	worldPos = worldTransform_.translation_;
+	return worldPos;
 }
