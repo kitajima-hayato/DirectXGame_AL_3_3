@@ -96,7 +96,7 @@ void Enemy::Fire() {
 	    distance.x * kBulletSpeed,
 	    distance.y * kBulletSpeed,
 	    distance.z * kBulletSpeed,
-	};
+	}; 
 	Vector3 velocityBullet = velocityNormalize;
 	// 速度ベクトルをエネミー自身の向きに合わせて回転させる
 	velocityBullet = TransformNormal(velocityBullet, worldTransform_.matWorld_);
