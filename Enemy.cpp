@@ -132,11 +132,4 @@ Vector3 Enemy::GetWorldPosition() {
 	return worldPos;
 }
 
-Vector3 Enemy::GetBulletWorldPosition() const { 
-	Vector3 worldpos;
-	for (EnemyBullet* bullet : bullets_) {
-		worldpos = bullet->GetWorldPosition();
-	}
-	return worldpos;
 
-}

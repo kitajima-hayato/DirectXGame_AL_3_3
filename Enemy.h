@@ -39,9 +39,6 @@ public:
 	void OnCollision();
 	//ワールド座標を取得
 	Vector3 GetWorldPosition();
-	//弾の座標をプレイヤーに渡す
-	Vector3 GetBulletWorldPosition() const;
-
 	//発射間隔
 	static const int kFireInterval = 60;
 	//弾リストを取得
