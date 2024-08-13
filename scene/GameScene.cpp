@@ -1,12 +1,12 @@
 #include "GameScene.h"
-#include "TextureManager.h"
 #include "AxisIndicator.h"
+#include "TextureManager.h"
 #include <cassert>
 
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-	delete model_; 
+	delete model_;
 	delete player_;
 	delete debugCamera_;
 	delete enemy_;
@@ -22,46 +22,46 @@ void GameScene::Initialize() {
 	model_ = Model::Create();
 	viewProjection_.Initialize();
 
-	//自キャラの生成
+	// 自キャラの生成
 	player_ = new Player();
-	//自キャラの初期化
-	player_->Initialize(model_,textureHandle_);
-	//デバッグカメラの生成
+	// 自キャラの初期化
+	player_->Initialize(model_, textureHandle_);
+	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
-	//軸方向表示のを有効にする
+	// 軸方向表示のを有効にする
 	AxisIndicator::GetInstance()->SetVisible(true);
-	//軸方向表示が算書するビュープロジェクションを指定する(アドレス渡し)
+	// 軸方向表示が算書するビュープロジェクションを指定する(アドレス渡し)
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
-	//エネミーの作成
+	// エネミーの作成
 	enemy_ = new Enemy();
-	//エネミーの更新
+	// エネミーの更新
 	modelEnemy_ = Model::Create();
 	Vector3 enemyPosition_ = {0, 2, -30.0f};
 	enemy_->Initialize(modelEnemy_, enemyPosition_);
-	//敵キャラに自キャラのアドレスを渡す
+	// 敵キャラに自キャラのアドレスを渡す
 	enemy_->SetPlayer(player_);
 }
 
-void GameScene::Update() { 
-	//自キャラの更新
+void GameScene::Update() {
+	// 自キャラの更新
 	player_->Update();
-	//敵の更新
+	// 敵の更新
 	enemy_->Update();
-	//デバッグカメラの更新
+	// デバッグカメラの更新
 	debugCamera_->Update();
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_1)) {
 		isDebugCameraActiv_ = true;
 	}
-	//カメラの処理
+	// カメラの処理
 	if (isDebugCameraActiv_) {
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-		//ビュープロジェクション行列の転送
+		// ビュープロジェクション行列の転送
 		viewProjection_.TransferMatrix();
 	} else {
-		//ビュープロジェクション行列の更新と転送
+		// ビュープロジェクション行列の更新と転送
 		viewProjection_.UpdateMatrix();
 	}
 #endif // _DEBUG
@@ -92,7 +92,7 @@ void GameScene::Draw() {
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
-	
+
 	enemy_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	/// </summary>
@@ -112,5 +112,31 @@ void GameScene::Draw() {
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
+#pragma endregion
+}
+
+void GameScene::CheckALLCollisions() {
+
+	// 判定対象AとBの座標
+	Vector3 posA, posB;
+
+	// 自弾リストの取得
+	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+	// 敵弾リストの取得
+	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
+
+#pragma regionb 自キャラと敵弾の当たり判定
+	//自キャラの座標
+	posA = player_->GetWorldPosition();
+
+	//自キャラと敵弾すべての当たり判定
+	for (EnemyBullet* bullet : enemyBullets) {
+		//敵弾の座標
+		posB=bullet->
+	}
+#pragma endregion
+#pragma region 自弾と敵キャラの当たり判定
+#pragma endregion
+#pragma region 自弾と敵弾の当たり判定
 #pragma endregion
 }

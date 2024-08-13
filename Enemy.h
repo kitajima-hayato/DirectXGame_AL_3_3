@@ -35,13 +35,19 @@ public:
 	void Fire();
 	//弾の自爆機能ポインタ的に
 	void Suicude();
-	
+	// 衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
 	//ワールド座標を取得
 	Vector3 GetWorldPosition();
+	//弾の座標をプレイヤーに渡す
+	Vector3 GetBulletWorldPosition() const;
 
 	//発射間隔
 	static const int kFireInterval = 60;
+	//弾リストを取得
+	const std::list<EnemyBullet*>& GetBullets() const { return bullets_; }
 
+	
 
 private:
 	WorldTransform worldTransform_;

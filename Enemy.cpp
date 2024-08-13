@@ -119,9 +119,24 @@ void Enemy::Suicude() {
 	});
 }
 
+void Enemy::OnCollision() {
+
+
+
+}
+
 Vector3 Enemy::GetWorldPosition() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
 	worldPos = worldTransform_.translation_;
 	return worldPos;
+}
+
+Vector3 Enemy::GetBulletWorldPosition() const { 
+	Vector3 worldpos;
+	for (EnemyBullet* bullet : bullets_) {
+		worldpos = bullet->GetWorldPosition();
+	}
+	return worldpos;
+
 }
