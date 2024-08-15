@@ -13,6 +13,10 @@ public:
 	void Draw(const ViewProjection& viewProjection);
 	//関数名の後ろのconstは「このメンバ関数はメンバ変数を書き換えませんよ」という指定
 	bool IsDead() const { return isDead_; }
+	// 衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
 
 private:
 	WorldTransform worldTransform_;

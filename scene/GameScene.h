@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "DebugCamera.h"
 #include "Enemy.h"
+#include "Skydome.h"
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -41,6 +42,9 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	//衝突判定と応答
+	void CheckALLCollisions();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -50,16 +54,20 @@ private: // メンバ変数
 
 	Model* model_ = nullptr;
 	ViewProjection viewProjection_;
-
+	// 自機
 	Player* player_ = nullptr;
 
 	//デバッグカメラ有効
 	bool isDebugCameraActiv_ = false;
 	DebugCamera* debugCamera_ = nullptr;
-
+	//敵
 	Enemy* enemy_ = nullptr;
 	Model* modelEnemy_ = nullptr;
 	
+	//天球
+	Skydome* skydome_ = nullptr;
+	Model* modeldome_ = nullptr;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

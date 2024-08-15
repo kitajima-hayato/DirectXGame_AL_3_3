@@ -73,15 +73,15 @@ void Enemy::Access() {
 	}
 
 	// 既定の位置に達したら離脱フェーズへ
-	if (worldTransform_.translation_.z > 0.0f) {
+	if (worldTransform_.translation_.z < 0.0f) {
 		phase_ = Phase::Leave;
 	}
 	// 移動(ベクトルを加算)
-	worldTransform_.translation_ += velocity;
+	worldTransform_.translation_ -= velocity;
 }
 
 void Enemy::Withdrawal() { // 移動(ベクトルを加算)
-	worldTransform_.translation_.y -= velocity.z;
+	worldTransform_.translation_.z -= velocity.z;
 }
 
 void Enemy::Fire() {
@@ -119,9 +119,16 @@ void Enemy::Suicude() {
 	});
 }
 
+void Enemy::OnCollision() {
+
+
+
+}
+
 Vector3 Enemy::GetWorldPosition() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
 	worldPos = worldTransform_.translation_;
 	return worldPos;
 }
+

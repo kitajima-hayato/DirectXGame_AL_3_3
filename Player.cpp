@@ -30,7 +30,7 @@ void Player::Update() {
 	// キャラクターの移動ベクトル
 	Vector3 move = {0, 0, 0};
 	// キャラクターの移動の速さ
-	const float kCharacterSpeed = 0.2f;
+	const float kCharacterSpeed = 0.5f;
 	// 押した方向で移動ベクトルを変更(左右)
 	if (input_->PushKey(DIK_LEFT)) {
 		move.x -= kCharacterSpeed;
@@ -103,10 +103,16 @@ void Player::Attack() {
 	}
 }
 
+void Player::OnCollision() {
+
+
+
+}
+
 Vector3 Player::GetWorldPosition() { 
 	//ワールド座標を入れる変数
 	Vector3 worldPos;
-	//ワールド行列の平湖移動成分を取得（ワールド座標）
+	//ワールド行列の平行移動成分を取得（ワールド座標）
 	worldPos = worldTransform_.translation_;
 	return worldPos;
 }
