@@ -47,7 +47,7 @@ void GameScene::Initialize() {
 	modeldome_ = Model::CreateFromOBJ("skydome", true); 
 	skydome_->Initialize(modeldome_, &viewProjection_);
 	
-}
+} 
 
 void GameScene::Update() {
 	//天球の更新
