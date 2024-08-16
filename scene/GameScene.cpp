@@ -11,6 +11,7 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 	delete enemy_;
 	delete modeldome_;
+	delete railCamera_;
 }
 
 void GameScene::Initialize() {
@@ -42,11 +43,14 @@ void GameScene::Initialize() {
 	// 敵キャラに自キャラのアドレスを渡す
 	enemy_->SetPlayer(player_);
 
-	//スカイドーム
+	//天球
 	skydome_ = new Skydome();
 	modeldome_ = Model::CreateFromOBJ("skydome", true); 
 	skydome_->Initialize(modeldome_, &viewProjection_);
 	
+	//レールカメラ
+	railCamera_ = new RailCamera();
+	railCamera_->Initialize(player_->GetWorldPosition(),player_->);
 } 
 
 void GameScene::Update() {
@@ -56,13 +60,21 @@ void GameScene::Update() {
 	player_->Update();
 	// 敵の更新
 	enemy_->Update();
-	// デバッグカメラの更新
-	debugCamera_->Update();
 	// 全ての当たり判定
 	CheckALLCollisions();
+	//レールカメラの更新
+	railCamera_->Update();
+	#pragma region viewProに値を渡す_レールカメラからゲームシーン
+	viewProjection_.matView = railCamera_->GetvieProjection().matView;
+	viewProjection_.matProjection = railCamera_->GetvieProjection().matProjection;
+	#pragma endregion
+	// デバッグカメラの更新
+	debugCamera_->Update();
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_1)) {
 		isDebugCameraActiv_ = true;
+	} else if (input_->TriggerKey(DIK_2)) {
+		isDebugCameraActiv_ = false;
 	}
 	// カメラの処理
 	if (isDebugCameraActiv_) {
