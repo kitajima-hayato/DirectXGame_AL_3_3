@@ -22,7 +22,7 @@ void PlayerBullet::Update() {
 		isDead_ = true;
 	}
 	// 行列更新
-	worldTransform_.UpadateMatrix();
+	worldTransform_.UpdateMatrix();
 	worldTransform_.TransferMatrix();
 }
 

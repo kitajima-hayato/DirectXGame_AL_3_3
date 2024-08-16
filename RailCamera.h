@@ -4,10 +4,11 @@
 #include <imgui.h>
 class RailCamera {
 public:
-	void Initialize(Vector3 worldPosition, Vector3 rotation);
+	void Initialize(WorldTransform* worldTransform);
 	void Update();
 
-	ViewProjection& GetvieProjection(){ return viewProjection_; };
+	Matrix4x4 GetViewProjectionMatview() const { return viewProjection_.matView; };
+	Matrix4x4 GetviewProjectionMatPro() const { return viewProjection_.matProjection; };
 
 private:
 	//ワールド変換データ

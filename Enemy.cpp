@@ -44,7 +44,7 @@ void Enemy::Update() {
 		break;
 	}
 	// 行列更新
-	worldTransform_.UpadateMatrix();
+	worldTransform_.UpdateMatrix();
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) {

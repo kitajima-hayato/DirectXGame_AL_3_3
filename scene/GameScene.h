@@ -72,6 +72,7 @@ private: // メンバ変数
 	//レールカメラ
 	RailCamera* railCamera_ = nullptr;
 	
+	WorldTransform worldTransform_;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
