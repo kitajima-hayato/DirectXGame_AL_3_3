@@ -1,7 +1,7 @@
 #include "RailCamera.h"
 
 void RailCamera::Initialize(Vector3 cameraPos,Vector3 cameraRotation) {
-	
+	worldTransform_.Initialize();
 	// ワールドトランスフォームの初期化
 	worldTransform_.translation_ = cameraPos;
 	worldTransform_.rotation_ = cameraRotation;
@@ -10,7 +10,8 @@ void RailCamera::Initialize(Vector3 cameraPos,Vector3 cameraRotation) {
 }
  
 void RailCamera::Update() {
-	worldTransform_.translation_ += Vector3(0.0f, 0.0f, -1.0f);
+	worldTransform_.translation_ += Vector3(0.0f, 0.0f, -0.01f);
+	worldTransform_.rotation_ += Vector3(0.0f, 0.0f, 0.0f);
 	worldTransform_.UpadateMatrix();
 	//カメラオブジェクトのワールド行列からビュー行列を計算する
 	viewProjection_.matView = Inverse(worldTransform_.matWorld_);

@@ -69,10 +69,10 @@ void GameScene::Update() {
 	#pragma region viewProに値を渡す_レールカメラからゲームシーン
 	viewProjection_.matView = railCamera_->GetvieProjection().matView;
 	viewProjection_.matProjection = railCamera_->GetvieProjection().matProjection;
-	//// ビュープロジェクション行列の更新と転送
-	//viewProjection_.UpdateMatrix();
-	//// ビュープロジェクション行列の転送
-	//viewProjection_.TransferMatrix();
+	// ビュープロジェクション行列の更新と転送
+	viewProjection_.UpdateMatrix();
+	// ビュープロジェクション行列の転送
+	viewProjection_.TransferMatrix();
 	#pragma endregion
 	// デバッグカメラの更新
 	debugCamera_->Update();
