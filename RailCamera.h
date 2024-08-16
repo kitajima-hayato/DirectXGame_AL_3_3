@@ -3,7 +3,6 @@
 #include <ViewProjection.h>
 #include <imgui.h>
 class RailCamera {
-
 public:
 	void Initialize(Vector3 worldPosition, Vector3 rotation);
 	void Update();

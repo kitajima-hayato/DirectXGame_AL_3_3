@@ -50,7 +50,9 @@ void GameScene::Initialize() {
 	
 	//レールカメラ
 	railCamera_ = new RailCamera();
-	railCamera_->Initialize(player_->GetWorldPosition(),player_->);
+	Vector3 cameraPos = {0.0f, 0.0f, -30.0f};
+	Vector3 cameraRotate = {0.0f, 0.0f, 0.0f};
+	railCamera_->Initialize(cameraPos, cameraRotate);
 } 
 
 void GameScene::Update() {
@@ -67,6 +69,10 @@ void GameScene::Update() {
 	#pragma region viewProに値を渡す_レールカメラからゲームシーン
 	viewProjection_.matView = railCamera_->GetvieProjection().matView;
 	viewProjection_.matProjection = railCamera_->GetvieProjection().matProjection;
+	//// ビュープロジェクション行列の更新と転送
+	//viewProjection_.UpdateMatrix();
+	//// ビュープロジェクション行列の転送
+	//viewProjection_.TransferMatrix();
 	#pragma endregion
 	// デバッグカメラの更新
 	debugCamera_->Update();

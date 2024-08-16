@@ -117,6 +117,7 @@ Vector3 Player::GetWorldPosition() {
 	return worldPos;
 }
 
+
 void Player::Draw(ViewProjection& viewProjection) {
 	// 3Dモデルの描画
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
