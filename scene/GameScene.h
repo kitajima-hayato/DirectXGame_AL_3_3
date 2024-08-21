@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Audio.h"
 #include "DirectXCommon.h"
 #include "Input.h"
@@ -50,29 +49,39 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+	//ワールドトランスフォーム
+	WorldTransform worldTransform_;
+	//ビュープロジェクション
+	ViewProjection viewProjection_;
 
 	uint32_t textureHandle_ = 0;
-
-	Model* model_ = nullptr;
-	ViewProjection viewProjection_;
-	// 自機
-	Player* player_ = nullptr;
+	
+	
 
 	//デバッグカメラ有効
 	bool isDebugCameraActiv_ = false;
 	DebugCamera* debugCamera_ = nullptr;
-	//敵
+
+	// 自機
+	Player* player_ = nullptr;
+	// 敵
 	Enemy* enemy_ = nullptr;
-	Model* modelEnemy_ = nullptr;
-	
-	//天球
+	// 天球
 	Skydome* skydome_ = nullptr;
+	// レールカメラ
+	RailCamera* railCamera_ = nullptr;
+
+	// プレイヤー
+	Model* model_ = nullptr;
+	// エネミー
+	Model* modelEnemy_ = nullptr;
+	// 天球
 	Model* modeldome_ = nullptr;
 
-	//レールカメラ
-	RailCamera* railCamera_ = nullptr;
+	//プレイヤーの座標をずらす
+	float frontPos = -45.0f;
 	
-	WorldTransform worldTransform_;
+	
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

@@ -10,7 +10,7 @@ GameScene::~GameScene() {
 	delete player_;
 	delete debugCamera_;
 	delete enemy_;
-	delete modeldome_;
+	delete skydome_;
 	delete railCamera_;
 }
 
@@ -23,11 +23,12 @@ void GameScene::Initialize() {
 	textureHandle_ = TextureManager::Load("mario.jpg");
 	model_ = Model::Create();
 	viewProjection_.Initialize();
-
+	worldTransform_.Initialize();
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-	player_->Initialize(model_, textureHandle_);
+	Vector3 playerPosition(0, 0,frontPos); // 自キャラの初期位置
+	player_->Initialize(model_, textureHandle_, playerPosition);
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 	// 軸方向表示のを有効にする
@@ -50,7 +51,9 @@ void GameScene::Initialize() {
 
 	// レールカメラ
 	railCamera_ = new RailCamera();
-	railCamera_->Initialize(&worldTransform_);
+	railCamera_->Initialize(worldTransform_);
+	// 自キャラとレールカメラの親子関係を結ぶ
+	player_->SetParent(&railCamera_->GetWorldTransform());
 }
 
 void GameScene::Update() {
@@ -61,10 +64,11 @@ void GameScene::Update() {
 	// 自キャラの更新
 	player_->Update();
 	// 敵の更新
-	enemy_->Update();
+	if (enemy_) {
+		enemy_->Update();
+	}
 	// 全ての当たり判定
 	CheckALLCollisions();
-
 #pragma region viewProに値を渡す_レールカメラからゲームシーン
 	viewProjection_.matView = railCamera_->GetViewProjectionMatview();
 	viewProjection_.matProjection = railCamera_->GetviewProjectionMatPro();
@@ -122,8 +126,10 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 
-	enemy_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
+	if (enemy_) {
+	enemy_->Draw(viewProjection_);	
+	}
 	/// </summary>
 
 	// 3Dオブジェクト描画後処理

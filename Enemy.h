@@ -4,7 +4,6 @@
 #include <ViewProjection.h>
 #include <WorldTransform.h>
 #include <cassert>
-#include <Input.h>
 #include <imgui.h>
 #include <list>
 #include "EnemyBullet.h"
@@ -57,8 +56,6 @@ private:
 	Phase phase_ = Phase::Approach;
 	//弾
 	std::list<EnemyBullet*> bullets_;
-	// 操作入力仮　消すときはインクルードしたのも消すように
-	Input* input_ = nullptr;
 	//発射タイマー
 	int32_t countDown = 0;
 	//自キャラ
