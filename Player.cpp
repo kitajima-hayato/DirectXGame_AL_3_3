@@ -45,10 +45,12 @@ void Player::Update() {
 	} else if (input_->PushKey(DIK_UP)) {
 		move.y += kCharacterSpeed;
 	}
-	//プレイヤーの旋回処理
+	// プレイヤーの旋回処理
 	Rotate();
 	// 座標移動
 	worldTransform_.translation_ += move;
+	
+	
 	// 移動限界座標
 	const float kMoveLimitX = 30.0f;
 	const float kMoveLimitY = 19.0f;
@@ -97,7 +99,7 @@ void Player::Attack() {
 		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 		//弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
+		newBullet->Initialize(model_, GetWorldPosition(), velocity);
 		//弾を登録する
 		bullets_.push_back(newBullet);
 	}
