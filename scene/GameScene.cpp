@@ -27,7 +27,7 @@ void GameScene::Initialize() {
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-	Vector3 playerPosition(0, 0,frontPos); // 自キャラの初期位置
+	Vector3 playerPosition(0, 0, -20.0f); // 自キャラの初期位置
 	player_->Initialize(model_, textureHandle_, playerPosition);
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
