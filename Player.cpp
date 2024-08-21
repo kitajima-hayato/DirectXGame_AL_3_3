@@ -7,12 +7,13 @@ Player::~Player() {
 	}
 }
 
-void Player::Initialize(Model* model, uint32_t textureHandle) {
+void Player::Initialize(Model* model, uint32_t textureHandle, Vector3 initPos) {
 	// NULLポインタチェック
 	assert(model);
 	model_ = model;
 	textureHandle_ = textureHandle;
 	worldTransform_.Initialize();
+	worldTransform_.translation_ = initPos;
 	input_ = Input::GetInstance();
 }
 
@@ -97,7 +98,7 @@ void Player::Attack() {
 		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 		//弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
+		newBullet->Initialize(model_, GetWorldPosition(), velocity);
 		//弾を登録する
 		bullets_.push_back(newBullet);
 	}
@@ -115,6 +116,11 @@ Vector3 Player::GetWorldPosition() {
 	//ワールド行列の平行移動成分を取得（ワールド座標）
 	worldPos = worldTransform_.translation_;
 	return worldPos;
+}
+
+void Player::SetParent(const WorldTransform* parent) {
+	//親子関係を結ぶ
+	worldTransform_.parent_ = parent;
 }
 
 void Player::Draw(ViewProjection& viewProjection) {

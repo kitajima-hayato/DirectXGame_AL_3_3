@@ -50,7 +50,9 @@ void GameScene::Initialize() {
 	
 	//レールカメラ
 	railCamera_ = new RailCamera();
-	railCamera_->Initialize(player_->GetWorldPosition(),player_->);
+	railCamera_->Initialize(worldTransform_);
+	//自キャラとレールカメラの親子関係を結ぶ
+	player_->SetParent(&railCamera_->GetWorldTrnasform());
 } 
 
 void GameScene::Update() {
@@ -62,31 +64,34 @@ void GameScene::Update() {
 	enemy_->Update();
 	// 全ての当たり判定
 	CheckALLCollisions();
-	//レールカメラの更新
-	railCamera_->Update();
+	
 	#pragma region viewProに値を渡す_レールカメラからゲームシーン
-	viewProjection_.matView = railCamera_->GetvieProjection().matView;
-	viewProjection_.matProjection = railCamera_->GetvieProjection().matProjection;
+	viewProjection_.matView = railCamera_->GetView();
+	viewProjection_.matProjection = railCamera_->GetViewProjection();
 	#pragma endregion
-	// デバッグカメラの更新
-	debugCamera_->Update();
-#ifdef _DEBUG
-	if (input_->TriggerKey(DIK_1)) {
-		isDebugCameraActiv_ = true;
-	} else if (input_->TriggerKey(DIK_2)) {
-		isDebugCameraActiv_ = false;
-	}
-	// カメラの処理
-	if (isDebugCameraActiv_) {
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-		// ビュープロジェクション行列の転送
-		viewProjection_.TransferMatrix();
-	} else {
-		// ビュープロジェクション行列の更新と転送
-		viewProjection_.UpdateMatrix();
-	}
-#endif // _DEBUG
+	viewProjection_.TransferMatrix();
+	// レールカメラの更新
+	railCamera_->Update();
+
+	//	// デバッグカメラの更新
+//	debugCamera_->Update();
+//#ifdef _DEBUG
+//	if (input_->TriggerKey(DIK_1)) {
+//		isDebugCameraActiv_ = true;
+//	} else if (input_->TriggerKey(DIK_2)) {
+//		isDebugCameraActiv_ = false;
+//	}
+//	// カメラの処理
+//	if (isDebugCameraActiv_) {
+//		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+//		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+//		// ビュープロジェクション行列の転送
+//		viewProjection_.TransferMatrix();
+//	} else {
+//		// ビュープロジェクション行列の更新と転送
+//		viewProjection_.UpdateMatrix();
+//	}
+//#endif // _DEBUG
 }
 
 void GameScene::Draw() {

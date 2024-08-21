@@ -72,6 +72,10 @@ private: // メンバ変数
 	//レールカメラ
 	RailCamera* railCamera_ = nullptr;
 
+	WorldTransform worldTransform_;
+
+	//プレイヤーの座標を前にずらす
+	float frontPos = 100.0f;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
