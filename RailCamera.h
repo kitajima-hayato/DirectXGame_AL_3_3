@@ -5,7 +5,7 @@
 class RailCamera {
 
 public:
-	void Initialize(WorldTransform& worldTransform);
+	void Initialize();
 	void Update();
 	// ワールドトランスフォームを取得
 	const WorldTransform& GetWorldTrnasform() const { return worldTransform_; }
@@ -16,6 +16,7 @@ public:
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
+
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
 };

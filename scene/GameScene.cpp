@@ -27,7 +27,8 @@ void GameScene::Initialize() {
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-	player_->Initialize(model_, textureHandle_);
+	Vector3 pos = {0, 0, frontPos};
+	player_->Initialize(model_, textureHandle_,pos);
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 	// 軸方向表示のを有効にする
@@ -50,13 +51,16 @@ void GameScene::Initialize() {
 	
 	//レールカメラ
 	railCamera_ = new RailCamera();
-	railCamera_->Initialize(worldTransform_);
-	//自キャラとレールカメラの親子関係を結ぶ
+	railCamera_->Initialize();
+	// 自キャラとレールカメラの親子関係を結ぶ
 	player_->SetParent(&railCamera_->GetWorldTrnasform());
+	
 } 
 
 void GameScene::Update() {
-	//天球の更新
+	// レールカメラの更新
+	railCamera_->Update();
+	// 天球の更新
 	skydome_->Update();
 	// 自キャラの更新
 	player_->Update();
@@ -70,9 +74,8 @@ void GameScene::Update() {
 	viewProjection_.matProjection = railCamera_->GetViewProjection();
 	#pragma endregion
 	viewProjection_.TransferMatrix();
-	// レールカメラの更新
-	railCamera_->Update();
 
+	
 	//	// デバッグカメラの更新
 //	debugCamera_->Update();
 //#ifdef _DEBUG

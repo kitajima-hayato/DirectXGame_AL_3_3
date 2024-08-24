@@ -74,7 +74,7 @@ void Player::Update() {
 	ImGui::End();
 
 	// 定数バッファに転送する
-	worldTransform_.TransferMatrix();
+	worldTransform_.UpadateMatrix();
 }
 
 void Player::Rotate() { 
