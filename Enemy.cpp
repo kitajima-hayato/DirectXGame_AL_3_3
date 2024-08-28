@@ -88,7 +88,7 @@ void Enemy::Fire() {
 	assert(player_);
 	// 弾の速度
 	const float kBulletSpeed = 1.0f;
-	Vector3 playerPosition = player_->GetWorldPosition();
+	Vector3 playerPosition = player_->GetWorldTrans();
 	Vector3 enemyPosition = GetWorldPosition();
 	Vector3 distance = enemyPosition - playerPosition;
 	distance = Normalize(distance);

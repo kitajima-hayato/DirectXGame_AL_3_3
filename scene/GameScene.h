@@ -75,7 +75,9 @@ private: // メンバ変数
 	WorldTransform worldTransform_;
 
 	//プレイヤーの座標を前にずらす
-	float frontPos = 100.0f;
+	float frontPos = 10.0f;
+
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

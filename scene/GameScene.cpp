@@ -27,8 +27,8 @@ void GameScene::Initialize() {
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-	Vector3 pos = {0, 0, frontPos};
-	player_->Initialize(model_, textureHandle_,pos);
+	Vector3 pos = {0, 3.5f, frontPos};
+	player_->Initialize(model_, textureHandle_, pos);
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 	// 軸方向表示のを有効にする
@@ -44,18 +44,17 @@ void GameScene::Initialize() {
 	// 敵キャラに自キャラのアドレスを渡す
 	enemy_->SetPlayer(player_);
 
-	//天球
+	// 天球
 	skydome_ = new Skydome();
-	modeldome_ = Model::CreateFromOBJ("skydome", true); 
+	modeldome_ = Model::CreateFromOBJ("skydome", true);
 	skydome_->Initialize(modeldome_, &viewProjection_);
-	
-	//レールカメラ
+
+	// レールカメラ
 	railCamera_ = new RailCamera();
 	railCamera_->Initialize();
 	// 自キャラとレールカメラの親子関係を結ぶ
 	player_->SetParent(&railCamera_->GetWorldTrnasform());
-	
-} 
+}
 
 void GameScene::Update() {
 	// レールカメラの更新
@@ -68,33 +67,32 @@ void GameScene::Update() {
 	enemy_->Update();
 	// 全ての当たり判定
 	CheckALLCollisions();
-	
-	#pragma region viewProに値を渡す_レールカメラからゲームシーン
+
+#pragma region viewProに値を渡す_レールカメラからゲームシーン
 	viewProjection_.matView = railCamera_->GetView();
 	viewProjection_.matProjection = railCamera_->GetViewProjection();
-	#pragma endregion
+#pragma endregion
 	viewProjection_.TransferMatrix();
 
-	
 	//	// デバッグカメラの更新
-//	debugCamera_->Update();
-//#ifdef _DEBUG
-//	if (input_->TriggerKey(DIK_1)) {
-//		isDebugCameraActiv_ = true;
-//	} else if (input_->TriggerKey(DIK_2)) {
-//		isDebugCameraActiv_ = false;
-//	}
-//	// カメラの処理
-//	if (isDebugCameraActiv_) {
-//		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-//		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-//		// ビュープロジェクション行列の転送
-//		viewProjection_.TransferMatrix();
-//	} else {
-//		// ビュープロジェクション行列の更新と転送
-//		viewProjection_.UpdateMatrix();
-//	}
-//#endif // _DEBUG
+	//	debugCamera_->Update();
+	// #ifdef _DEBUG
+	//	if (input_->TriggerKey(DIK_1)) {
+	//		isDebugCameraActiv_ = true;
+	//	} else if (input_->TriggerKey(DIK_2)) {
+	//		isDebugCameraActiv_ = false;
+	//	}
+	//	// カメラの処理
+	//	if (isDebugCameraActiv_) {
+	//		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+	//		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+	//		// ビュープロジェクション行列の転送
+	//		viewProjection_.TransferMatrix();
+	//	} else {
+	//		// ビュープロジェクション行列の更新と転送
+	//		viewProjection_.UpdateMatrix();
+	//	}
+	// #endif // _DEBUG
 }
 
 void GameScene::Draw() {
@@ -109,7 +107,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
-	
+
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
@@ -213,12 +211,12 @@ void GameScene::CheckALLCollisions() {
 #pragma endregion
 #pragma region 自弾と敵弾の当たり判定
 	for (PlayerBullet* bulletPlayer : playerBullets) {
-		//自弾の座標
+		// 自弾の座標
 		posA = bulletPlayer->GetWorldPosition();
-		//敵弾の座標
+		// 敵弾の座標
 		for (EnemyBullet* bulletEnemy : enemyBullets) {
 			posB = bulletEnemy->GetWorldPosition();
-			//座標AとBの距離を求める
+			// 座標AとBの距離を求める
 			Vector3 distance = {
 			    (posB.x - posA.x) * (posB.x - posA.x),
 			    (posB.y - posA.y) * (posB.y - posA.y),
