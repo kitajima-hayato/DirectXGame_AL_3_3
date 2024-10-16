@@ -53,6 +53,9 @@ public:
 
 	void UpadateMatrix();
 
+	void UpdateMatrixWorld();
+
+
 private:
 	// 定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer_;

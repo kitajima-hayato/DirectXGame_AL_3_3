@@ -9,7 +9,7 @@
 class Player {
 public:
 	~Player();
-	void Initialize(Model*model,uint32_t textureHandle);
+	void Initialize(Model*model,uint32_t textureHandle,Vector3 initPos);
 	void Update();
 	void Draw(ViewProjection&viewProjection);
 	
@@ -22,8 +22,11 @@ public:
 	
 	//ワールド座標を取得
 	Vector3 GetWorldPosition();
+	
 	//弾リストを取得
 	const std::list<PlayerBullet*>& GetBullets() const { return bullets_; }
+
+	void SetParent(const WorldTransform* parent);
 
 private:
 	//ワールド変換データ
