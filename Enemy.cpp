@@ -1,9 +1,7 @@
 #include "Enemy.h"
 #include "Player.h"
 Enemy::~Enemy() {
-	for (EnemyBullet* bullet : bullets_) {
-		delete bullet;
-	}
+	
 }
 
 void Enemy::Initialize(Model* model, const Vector3& position) {
@@ -28,21 +26,25 @@ void Enemy::Update() {
 	switch (phase_) {
 	case Phase::Approach: // 接近フェーズ
 		Access();
-		for (EnemyBullet* bullet : bullets_) {
+		/*for (EnemyBullet* bullet : bullets_) {
 			bullet->Update();
-		}
+		}*/
 		Suicude();
 
 		break;
 	case Phase::Leave: // 離脱フェーズ
 		Withdrawal();
-		for (EnemyBullet* bullet : bullets_) {
+		/*for (EnemyBullet* bullet : bullets_) {
 			bullet->Update();
-		}
+		}*/
 		Suicude();
 
 		break;
 	}
+	// キャラクターの座標を画面表示する処理
+	ImGui::Begin("Enemy");
+	ImGui::SliderFloat3("Position", &worldTransform_.translation_.x, -10.0f, 10.0f);
+	ImGui::End();
 	// 行列更新
 	worldTransform_.UpadateMatrix();
 }
@@ -51,9 +53,9 @@ void Enemy::Draw(const ViewProjection& viewProjection) {
 	// モデルの描画
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 	// 弾の描画
-	for (EnemyBullet* bullet : bullets_) {
+	/*for (EnemyBullet* bullet : bullets_) {
 		bullet->Draw(viewProjection);
-	}
+	}*/
 }
 
 void Enemy::AccessInit() {
@@ -88,7 +90,7 @@ void Enemy::Fire() {
 	assert(player_);
 	// 弾の速度
 	const float kBulletSpeed = 1.0f;
-	Vector3 playerPosition = player_->GetWorldTrans();
+	Vector3 playerPosition = player_->GetWorldPosition();
 	Vector3 enemyPosition = GetWorldPosition();
 	Vector3 distance = enemyPosition - playerPosition;
 	distance = Normalize(distance);
