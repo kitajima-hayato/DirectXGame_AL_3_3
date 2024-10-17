@@ -5,7 +5,6 @@
 #include <WorldTransform.h>
 #include <cassert>
 #include <Input.h>
-#include <imgui.h>
 #include <list>
 #include "EnemyBullet.h"
 //自機クラスの前方宣言
@@ -35,7 +34,7 @@ public:
 	// エネミーの攻撃
 	void Fire();
 	// 弾の自爆機能ポインタ的に
-	void Suicude();
+	//void suicide();
 	// 衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
 
@@ -51,6 +50,8 @@ public:
 	// 弾リストを取得
 	//const std::list<EnemyBullet*>& GetBullets() const { return bullets_; }
 
+	
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
@@ -61,7 +62,6 @@ private:
 	// フェーズ
 	Phase phase_ = Phase::Approach;
 	// 弾
-	std::list<EnemyBullet*> bullets_;
 	// 操作入力仮　消すときはインクルードしたのも消すように
 	Input* input_ = nullptr;
 	// 発射タイマー

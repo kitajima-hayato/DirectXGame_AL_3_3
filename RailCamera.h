@@ -1,7 +1,6 @@
 #pragma once
 #include <ViewProjection.h>
 #include <WorldTransform.h>
-#include <imgui.h>
 class RailCamera {
 
 public:

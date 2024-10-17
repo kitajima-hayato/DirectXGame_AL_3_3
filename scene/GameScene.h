@@ -64,6 +64,8 @@ public: // メンバ関数
 	//敵発生コマンドの更新
 	void UpdateEnemyPopCommands();
 
+	void suicide();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -103,7 +105,4 @@ private: // メンバ変数
 	bool stay = true;             // 待機中フラグ
 	int32_t stayTimer = waitTime; // 待機タイマー
 
-	/// <summary>
-	/// ゲームシーン用
-	/// </summary>
 };
