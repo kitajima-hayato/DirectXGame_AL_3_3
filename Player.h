@@ -1,7 +1,6 @@
 #pragma once
 #include <Model.h>
 #include <WorldTransform.h>
-#include <imgui.h>
 #include <Input.h>
 #include <MakeMatrix.h>
 #include <list>

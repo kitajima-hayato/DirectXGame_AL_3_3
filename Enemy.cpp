@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "Player.h"
+#include "GameScene.h"
 Enemy::~Enemy() {
 	
 }
@@ -22,29 +23,26 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 
 void Enemy::Update() {
 	// 移動速度
-
+	std::cout << "Enemy updating..." << std::endl; // デバッグプリント
 	switch (phase_) {
 	case Phase::Approach: // 接近フェーズ
 		Access();
-		/*for (EnemyBullet* bullet : bullets_) {
-			bullet->Update();
-		}*/
-		Suicude();
+		
+		//Suicude();
 
 		break;
 	case Phase::Leave: // 離脱フェーズ
 		Withdrawal();
-		/*for (EnemyBullet* bullet : bullets_) {
-			bullet->Update();
-		}*/
-		Suicude();
+		//Suicude();
 
 		break;
 	}
+	#ifdef _DEBUG
 	// キャラクターの座標を画面表示する処理
-	ImGui::Begin("Enemy");
+	/*ImGui::Begin("Enemy");
 	ImGui::SliderFloat3("Position", &worldTransform_.translation_.x, -10.0f, 10.0f);
-	ImGui::End();
+	ImGui::End();*/
+	#endif
 	// 行列更新
 	worldTransform_.UpadateMatrix();
 }
@@ -107,19 +105,19 @@ void Enemy::Fire() {
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->Initialize(model_, worldTransform_.translation_, velocityBullet);
 	// 弾を登録する
-	bullets_.push_back(newBullet);
+	gameScene_->AddEnemyBullet(newBullet);
 }
 
-void Enemy::Suicude() {
-	// デスフラグの立った弾の削除
-	bullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-	});
-}
+//void Enemy::suicide() {
+//	// デスフラグの立った弾の削除
+//	bullets_.remove_if([](EnemyBullet* bullet) {
+//		if (bullet->IsDead()) {
+//			delete bullet;
+//			return true;
+//		}
+//		return false;
+//	});
+//}
 
 void Enemy::OnCollision() {
 

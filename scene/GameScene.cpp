@@ -32,7 +32,7 @@ void GameScene::Initialize() {
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-	Vector3 pos = {0, 3.5f, frontPos};
+	Vector3 pos = {0, 0.0f, frontPos};
 	player_->Initialize(model_, textureHandle_, pos);
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
@@ -55,7 +55,7 @@ void GameScene::Initialize() {
 	// 自キャラとレールカメラの親子関係を結ぶ
 	player_->SetParent(&railCamera_->GetWorldTrnasform());
 
-	//csvの読み込み
+	// csvの読み込み
 	LoadEnemyPopData();
 }
 
@@ -74,12 +74,13 @@ void GameScene::Update() {
 	// 敵の弾の更新
 	for (EnemyBullet* bullet : enemyBullets_) {
 		bullet->Update();
-		AddEnemyBullet(bullet);
+		
 	}
 	// 全ての当たり判定
 	CheckALLCollisions();
 	DethEnemy();
-#pragma region viewProに値を渡す_レールカメラからゲームシーン
+	suicide();
+#pragma region viewProに値を渡す
 	viewProjection_.matView = railCamera_->GetView();
 	viewProjection_.matProjection = railCamera_->GetViewProjection();
 #pragma endregion
@@ -131,14 +132,15 @@ void GameScene::Draw() {
 	skydome_->Draw();
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
+	/// </summary>
 	for (EnemyBullet* bullet : enemyBullets_) {
 		bullet->Draw(viewProjection_);
+		
 	}
 	for (Enemy* enemy : enemys_) {
 		enemy->Draw(viewProjection_);
 	}
 	player_->Draw(viewProjection_);
-	/// </summary>
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -314,7 +316,7 @@ void GameScene::UpdateEnemyPopCommands() {
 		std::istringstream line_stream(line);
 
 		std::string word;
-		// 　,区切りで行の先頭文字列を取得
+		// ,区切りで行の先頭文字列を取得
 		getline(line_stream, word, ',');
 
 		//"//"から始まる行はコメント行
@@ -337,7 +339,7 @@ void GameScene::UpdateEnemyPopCommands() {
 			float z = (float)std::atof(word.c_str());
 
 			// 敵を発生させる
-			PopEnemy(Vector3(x,y,z));
+			PopEnemy(Vector3(x, y, z));
 		} else if (word.find("WAIT") == 0) {
 			getline(line_stream, word, ',');
 
@@ -352,4 +354,15 @@ void GameScene::UpdateEnemyPopCommands() {
 			break;
 		}
 	}
+}
+
+void GameScene::suicide() {
+	// デスフラグの立った弾の削除
+	enemyBullets_.remove_if([](EnemyBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
 }

@@ -1,6 +1,8 @@
 #include "Player.h"
 #include <cassert>
-
+#ifdef _DEBUG
+#include <imgui.h>
+#endif
 Player::~Player() {
 	for (PlayerBullet* bullet : bullets_) {
 		delete bullet;
@@ -69,12 +71,12 @@ void Player::Update() {
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Update();
 	}
-
+	#ifdef _DEBUG
 	// キャラクターの座標を画面表示する処理
 	ImGui::Begin("Player");
 	ImGui::SliderFloat3("Position", &worldTransform_.translation_.x, -10.0f, 10.0f);
 	ImGui::End();
-
+	#endif
 	// 定数バッファに転送する
 	worldTransform_.UpadateMatrix();
 }
